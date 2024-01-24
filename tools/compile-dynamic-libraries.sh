@@ -15,36 +15,36 @@ function prepare() {
   mkdir -p $1
 }
 
-# Linux native.
+# Linux
 
 prepare $BUILD_LINUX
 
 ( 
   cd $BUILD_LINUX                                        
-  cmake -DBUILD_SHARED_LIBS="ON" ../                     
+  cmake -DBUILD_SHARED_LIBS="ON" -DCMAKE_TOOLCHAIN_FILE=../../tools/zig-toolchain-x86_64.linux.cmake ../ 
   make webp                                              
-  cp libwebp.so.$VERSION ../../lib/dynamic/blobs/libwebp.so 
+  cp libwebp.so.$VERSION ../../lib/dynamic/webp/blobs/libwebp.so 
 )
 
-# Windows with zig.
+# Windows
 
 prepare $BUILD_WINDOWS
 
 ( 
   cd $BUILD_WINDOWS                                                                                           
-  cmake -DBUILD_SHARED_LIBS="ON" -DCMAKE_TOOLCHAIN_FILE=../../tools/cross-windows.cmake ../ 
+  cmake -DBUILD_SHARED_LIBS="ON" -DCMAKE_TOOLCHAIN_FILE=../../tools/zig-toolchain-x86_64.windows.cmake ../ 
   make webp                                                                                                   
-  cp libwebp.dll ../../lib/dynamic/blobs/libwebp.dll                                                          
+  cp libwebp.dll ../../lib/dynamic/webp/blobs/libwebp.dll                                                          
 )
 
-# macOS with osxcross.
+# macOS
 
 prepare $BUILD_MACOS
 
 (
   cd $BUILD_MACOS                                                                                         
-  cmake -DBUILD_SHARED_LIBS="ON" -DCMAKE_TOOLCHAIN_FILE=../../tools/cross-macos.cmake ../ 
+  cmake -DBUILD_SHARED_LIBS="ON" -DCMAKE_TOOLCHAIN_FILE=../../tools/zig-toolchain-x86_64.macos.cmake ../ 
   make webp                                                                                               
-  cp libwebp.$VERSION.dylib ../../lib/dynamic/blobs/libwebp.dylib                                         
+  cp libwebp.$VERSION.dylib ../../lib/dynamic/webp/blobs/libwebp.dylib                                         
 )
 
